@@ -13,7 +13,7 @@ const Preview: React.FC<PreviewProps> = ({ content, title }) => {
     if (!text) return null;
 
     // Split by display math blocks ($$...$$)
-    const displayMathRegex = /\$\$([^$]+)\$\$/g;
+    const displayMathRegex = /\$\$([\s\S]+?)\$\$/g;
     const parts = text.split(displayMathRegex);
     
     return parts.map((part, index) => {

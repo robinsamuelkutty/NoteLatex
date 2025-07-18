@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calculator, FlaskConical, Type, Save, FileText, Plus } from 'lucide-react';
+import { Calculator, FlaskConical, Save, FileText, Plus } from 'lucide-react';
 import { mathSymbols, chemistrySymbols } from '../data/symbols';
 
 interface ToolbarProps {
@@ -11,6 +11,29 @@ interface ToolbarProps {
 
 const Toolbar: React.FC<ToolbarProps> = ({ onSymbolClick, onSave, onNewNote, onShowNotes }) => {
   const [activeTab, setActiveTab] = React.useState<'math' | 'chemistry'>('math');
+
+  const renderSymbolButtons = () => {
+    const symbols = activeTab === 'math' ? mathSymbols : chemistrySymbols;
+    const baseStyle =
+      activeTab === 'math'
+        ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200'
+        : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200';
+
+    return symbols.map((symbol, index) => (
+      <button
+        key={index}
+        onClick={() =>
+          onSymbolClick(
+            `${symbol.displayMode === 'block' ? `$$${symbol.latex}$$` : `$${symbol.latex}$`}`
+          )
+        }
+        className={`px-3 py-2 rounded-lg transition-colors text-sm font-mono ${baseStyle}`}
+        title={symbol.description}
+      >
+        {symbol.symbol}
+      </button>
+    ));
+  };
 
   return (
     <div className="bg-white border-b border-gray-200 p-4">
@@ -38,13 +61,13 @@ const Toolbar: React.FC<ToolbarProps> = ({ onSymbolClick, onSave, onNewNote, onS
             Save
           </button>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('math')}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-              activeTab === 'math' 
-                ? 'bg-blue-100 text-blue-700 border border-blue-300' 
+              activeTab === 'math'
+                ? 'bg-blue-100 text-blue-700 border border-blue-300'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -54,8 +77,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ onSymbolClick, onSave, onNewNote, onS
           <button
             onClick={() => setActiveTab('chemistry')}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-              activeTab === 'chemistry' 
-                ? 'bg-green-100 text-green-700 border border-green-300' 
+              activeTab === 'chemistry'
+                ? 'bg-green-100 text-green-700 border border-green-300'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -66,29 +89,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onSymbolClick, onSave, onNewNote, onS
       </div>
 
       <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
-        {activeTab === 'math' ? (
-          mathSymbols.map((symbol, index) => (
-            <button
-              key={index}
-              onClick={() => onSymbolClick(symbol.latex)}
-              className="px-3 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors border border-blue-200 text-sm font-mono"
-              title={symbol.description}
-            >
-              {symbol.symbol}
-            </button>
-          ))
-        ) : (
-          chemistrySymbols.map((symbol, index) => (
-            <button
-              key={index}
-              onClick={() => onSymbolClick(symbol.latex)}
-              className="px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors border border-green-200 text-sm font-mono"
-              title={symbol.description}
-            >
-              {symbol.symbol}
-            </button>
-          ))
-        )}
+        {renderSymbolButtons()}
       </div>
     </div>
   );

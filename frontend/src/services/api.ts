@@ -14,7 +14,7 @@ export const noteService = {
   // Get all notes
   getAllNotes: async (): Promise<Note[]> => {
     const response = await api.get('/notes');
-    return response.data;
+    return response.data.notes || [];
   },
 
   // Get note by ID

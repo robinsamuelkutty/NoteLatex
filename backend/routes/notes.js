@@ -125,6 +125,7 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/notes - Create a new note
 router.post('/', async (req, res) => {
+  console.log("Incoming request body:", req.body);
   try {
     const storage = getStorage(req);
     
