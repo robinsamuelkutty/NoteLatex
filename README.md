@@ -113,7 +113,7 @@ FRONTEND_URL=http://localhost:5173
 3. Set environment variables in Vercel dashboard
 4. Deploy automatically on push
 
-### Backend (Railway/Heroku)
+### Backend (Render)
 1. Create new app
 2. Connect GitHub repository
 3. Set environment variables
